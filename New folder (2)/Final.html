@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Be My Valentine 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Comic Sans MS', cursive;
+        overflow: hidden;
+    }
+
+    .container {
+        text-align: center;
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        max-width: 90%;
+    }
+
+    h1 {
+        color: #ff4d6d;
+        margin-bottom: 10px;
+    }
+
+    #message {
+        height: 25px;
+        color: #ff006e;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .buttons {
+        position: relative;
+        height: 160px;
+    }
+
+    button {
+        padding: 14px 28px;
+        font-size: 18px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: absolute;
+    }
+
+    #yes {
+        background: #38b000;
+        color: white;
+        left: 20%;
+    }
+
+    #yes:hover {
+        transform: scale(1.4);
+        box-shadow: 0 0 25px rgba(56,176,0,0.7);
+    }
+
+    #no {
+        background: #d00000;
+        color: white;
+        left: 55%;
+    }
+
+    canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+    }
+</style>
+</head>
+
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="container">
+    <h1>Will you be my Valentine? 💘</h1>
+    <div id="message"></div>
+
+    <div class="buttons">
+        <button id="yes">YES 💖</button>
+        <button id="no">NO 🙃</button>
+    </div>
+</div>
+
+<audio id="music" src="https://www.bensound.com/bensound-music/bensound-romantic.mp3"></audio>
+
+<script>
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const msg = document.getElementById("message");
+    const music = document.getElementById("music");
+
+    let yesScale = 1;
+    let noScale = 1;
+    let noCount = 0;
+
+    const sarcasticMessages = [
+        "Oh dear Yukta. Bold choice 😏",
+        "Yukta, Are you sure about that? 🙃",
+        "Interesting… very interesting 🤔",
+        "I admire your confidence babe 😌",
+        "That NO is looking smaller lol 👀",
+        "Denial is a stage 😜",
+        "This button is losing power 😈",
+        "At this point, YES is inevitable 😏",
+        "Okay now you’re just clicking for fun 😂"
+    ];
+
+    noBtn.addEventListener("click", () => {
+    // Show sarcastic message
+    msg.innerText = sarcasticMessages[noCount % sarcasticMessages.length];
+    noCount++;
+
+    // YES grows
+    yesScale += 0.25;
+    yesBtn.style.transform = `scale(${yesScale})`;
+
+    // NO shrinks
+    noScale -= 0.15;
+
+    // When NO becomes too small → disappear
+    if (noScale <= 0.25) {
+        noBtn.style.display = "none";
+        msg.innerText = "NO has left the chat 😌";
+        return;
+    }
+
+    noBtn.style.transform = `scale(${noScale})`;
+});
+
+    yesBtn.addEventListener("click", () => {
+        music.play();
+        startConfetti();
+
+        document.body.innerHTML = `
+        <div style="
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg,#ff758c,#ff7eb3);
+            color:white;
+            font-family:Comic Sans MS;
+            text-align:center;
+            padding:20px;">
+            <h1>
+                FINALLY 😌💕<br><br>
+                Best Valentine Ever ❤️<br>
+                You made the only correct choice 😏
+            </h1>
+        </div>`;
+    });
+
+    // 🎉 CONFETTI
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confettiPieces = [];
+
+    function startConfetti() {
+        for (let i = 0; i < 180; i++) {
+            confettiPieces.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 6 + 4,
+                color: `hsl(${Math.random() * 360},100%,50%)`
+            });
+        }
+        animateConfetti();
+    }
+
+    function animateConfetti() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        confettiPieces.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.fill();
+            p.y += Math.random() * 3 + 2;
+        });
+        requestAnimationFrame(animateConfetti);
+    }
+</script>
+
+
+
+</body>
+</html>
