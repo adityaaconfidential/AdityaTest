@@ -102,29 +102,42 @@
     const music = document.getElementById("music");
 
     let yesScale = 1;
+    let noScale = 1;
     let noCount = 0;
 
     const sarcasticMessages = [
-        "Oh wow. Bold choice 😏",
-        "Are you sure about that? 🙃",
+        "Oh dear Yukta. Bold choice 😏",
+        "Yukta, Are you sure about that? 🙃",
         "Interesting… very interesting 🤔",
-        "I admire your confidence 😌",
-        "This button is getting tired 😴",
-        "Okay now you’re just pretending 😒",
-        "Denial is a stage, you know 😜",
-        "At this point, YES is judging you 👀",
-        "Alright, I’ll stop asking (I won’t) 😈"
+        "I admire your confidence babe 😌",
+        "That NO is looking smaller lol 👀",
+        "Denial is a stage 😜",
+        "This button is losing power 😈",
+        "At this point, YES is inevitable 😏",
+        "Okay now you’re just clicking for fun 😂"
     ];
 
     noBtn.addEventListener("click", () => {
-        // Change sarcastic text
-        msg.innerText = sarcasticMessages[noCount % sarcasticMessages.length];
-        noCount++;
+    // Show sarcastic message
+    msg.innerText = sarcasticMessages[noCount % sarcasticMessages.length];
+    noCount++;
 
-        // YES grows every NO click
-        yesScale += 0.25;
-        yesBtn.style.transform = `scale(${yesScale})`;
-    });
+    // YES grows
+    yesScale += 0.25;
+    yesBtn.style.transform = `scale(${yesScale})`;
+
+    // NO shrinks
+    noScale -= 0.15;
+
+    // When NO becomes too small → disappear
+    if (noScale <= 0.25) {
+        noBtn.style.display = "none";
+        msg.innerText = "NO has left the chat 😌";
+        return;
+    }
+
+    noBtn.style.transform = `scale(${noScale})`;
+});
 
     yesBtn.addEventListener("click", () => {
         music.play();
@@ -144,7 +157,7 @@
             <h1>
                 FINALLY 😌💕<br><br>
                 Best Valentine Ever ❤️<br>
-                You made the correct choice 😏
+                You made the only correct choice 😏
             </h1>
         </div>`;
     });
@@ -181,6 +194,7 @@
         requestAnimationFrame(animateConfetti);
     }
 </script>
+
 
 
 </body>
