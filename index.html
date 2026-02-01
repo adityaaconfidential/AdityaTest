@@ -97,24 +97,36 @@
 
 <script>
     const noBtn = document.getElementById("no");
-    const msg = document.getElementById("message");
     const yesBtn = document.getElementById("yes");
+    const msg = document.getElementById("message");
     const music = document.getElementById("music");
 
-    function moveNoButton() {
-        msg.innerText = "Oops 😜 wrong choice";
+    let yesScale = 1;
+    let noCount = 0;
 
-        const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-        const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+    const sarcasticMessages = [
+        "Oh wow. Bold choice 😏",
+        "Are you sure about that? 🙃",
+        "Interesting… very interesting 🤔",
+        "I admire your confidence 😌",
+        "This button is getting tired 😴",
+        "Okay now you’re just pretending 😒",
+        "Denial is a stage, you know 😜",
+        "At this point, YES is judging you 👀",
+        "Alright, I’ll stop asking (I won’t) 😈"
+    ];
 
-        noBtn.style.left = x + "px";
-        noBtn.style.top = y + "px";
-    }
+    noBtn.addEventListener("click", () => {
+        // Change sarcastic text
+        msg.innerText = sarcasticMessages[noCount % sarcasticMessages.length];
+        noCount++;
 
-    noBtn.addEventListener("mouseover", moveNoButton);
-    noBtn.addEventListener("touchstart", moveNoButton);
+        // YES grows every NO click
+        yesScale += 0.25;
+        yesBtn.style.transform = `scale(${yesScale})`;
+    });
 
-    yesBtn.onclick = () => {
+    yesBtn.addEventListener("click", () => {
         music.play();
         startConfetti();
 
@@ -130,14 +142,14 @@
             text-align:center;
             padding:20px;">
             <h1>
-                YAYYY!! 💕🥰<br><br>
+                FINALLY 😌💕<br><br>
                 Best Valentine Ever ❤️<br>
-                I owe you a date 😏
+                You made the correct choice 😏
             </h1>
         </div>`;
-    };
+    });
 
-    // CONFETTI 🎉
+    // 🎉 CONFETTI
     const canvas = document.getElementById("confetti");
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
@@ -146,12 +158,11 @@
     const confettiPieces = [];
 
     function startConfetti() {
-        for (let i = 0; i < 150; i++) {
+        for (let i = 0; i < 180; i++) {
             confettiPieces.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
                 r: Math.random() * 6 + 4,
-                d: Math.random() * 150,
                 color: `hsl(${Math.random() * 360},100%,50%)`
             });
         }
@@ -170,6 +181,7 @@
         requestAnimationFrame(animateConfetti);
     }
 </script>
+
 
 </body>
 </html>
